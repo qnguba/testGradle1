@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'war'
+
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+test {
+    useJUnitPlatform()
+}
+
+gradle.taskGraph.whenReady {
+    tasks.withType(JavaExec) {
+        if (name.endsWith(".main()")) {
+            println("Setting executable to java launcher for ${name}")
+            it.setExecutable(javaLauncher.get().executablePath.asFile.absolutePath)
+        }
+    }
+}
+
+dependencies {
+
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('mysql:mysql-connector-java:8.0.33')
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:mysql:1.19.3'
+    testImplementation "org.testcontainers:junit-jupiter:1.19.3"
+    testImplementation 'org.assertj:assertj-core:3.20.0'
+    testImplementation 'com.tngtech.archunit:archunit:1.2.1'
+}
