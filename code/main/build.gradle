@@ -17,6 +17,11 @@ test {
     useJUnitPlatform()
 }
 
+// By the documentation one can define main class for SpringBoot application inside the springBoot extension
+springBoot {
+    mainClass = 'org.example.Main'
+}
+
 gradle.taskGraph.whenReady {
     tasks.withType(JavaExec) {
         if (name.endsWith(".main()")) {
